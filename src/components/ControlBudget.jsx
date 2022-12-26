@@ -1,16 +1,64 @@
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
 import {globalStyles} from '../styles';
+import {formatAmount} from '../helpers';
 
-export const ControlBudget = () => {
+const AmountDisplay = ({label, amount}) => {
   return (
-    <View style={globalStyles.container}>
-      <View>
-        <Image source={require('../img/grafico.jpg')} />
-        <Text>ControlBudget</Text>
+    <Text style={styles.amount}>
+      <Text style={styles.label}>{label} </Text>
+      {formatAmount(amount)}
+    </Text>
+  );
+};
+export const ControlBudget = ({budget, expenditures}) => {
+  const [available, setAvailable] = useState(0);
+  const [used, setUsed] = useState(0);
+
+  useEffect(() => {
+    const totalUsed = expenditures.reduce(
+      (total, expense) => Number(expense.amount) + total,
+      0,
+    );
+    setUsed(totalUsed);
+    setAvailable(budget - totalUsed);
+  }, [budget, expenditures]);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.centerImg}>
+        <Image style={styles.image} source={require('../img/grafico.jpg')} />
+      </View>
+      <View style={styles.containerText}>
+        <AmountDisplay label="Budget: " amount={budget} />
+        <AmountDisplay label="Available: " amount={available} />
+        <AmountDisplay label="Used: " amount={used} />
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    ...globalStyles.container,
+  },
+  centerImg: {
+    alignItems: 'center',
+  },
+  image: {
+    width: 250,
+    height: 250,
+  },
+  containerText: {
+    marginTop: 50,
+  },
+  label: {
+    fontWeight: '700',
+    color: '#3B82F6',
+  },
+  amount: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+});

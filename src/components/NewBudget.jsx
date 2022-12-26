@@ -1,9 +1,8 @@
 import {StyleSheet, Text, View, Pressable, TextInput} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {globalStyles} from '../styles';
 
-export const NewBudget = ({handleNewBudget}) => {
-  const [budget, setBudget] = useState(0);
+export const NewBudget = ({budget, setBudget, handleNewBudget}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Define Budget</Text>
