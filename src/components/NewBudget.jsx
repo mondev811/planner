@@ -5,7 +5,7 @@ import {globalStyles} from '../styles';
 export const NewBudget = ({handleNewBudget}) => {
   const [budget, setBudget] = useState(0);
   return (
-    <View style={globalStyles.container}>
+    <View style={styles.container}>
       <Text style={styles.label}>Define Budget</Text>
       <TextInput
         keyboardType="numeric"
@@ -22,6 +22,9 @@ export const NewBudget = ({handleNewBudget}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    ...globalStyles.container,
+  },
   label: {
     textAlign: 'center',
     fontSize: 24,
