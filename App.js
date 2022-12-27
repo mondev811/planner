@@ -5,11 +5,7 @@ import {ControlBudget, ExpenseForm, Header, NewBudget} from './src/components';
 const App = () => {
   const [isValidBudget, setIsValidBudget] = useState(false);
   const [budget, setBudget] = useState(0);
-  const [expenditures, setExpenditures] = useState([
-    // {id: 1, amount: 30},
-    // {id: 2, amount: 40},
-    // {id: 3, amount: 50},
-  ]);
+  const [expenditures, setExpenditures] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleNewBudget = budget => {
@@ -18,6 +14,22 @@ const App = () => {
     } else {
       Alert.alert('Error', 'The amount must be greater than zero');
     }
+  };
+
+  const newExpenseHandler = expense => {
+    if (Object.values(expense).includes('')) {
+      Alert.alert('Error', 'All fields are required.');
+      return;
+    }
+    const newExpense = {
+      id: Date.now(),
+      name: expense.name,
+      amount: expense.amount,
+      category: expense.category,
+    };
+
+    setExpenditures([...expenditures, newExpense]);
+    setModalVisible(false);
   };
 
   return (
@@ -39,7 +51,10 @@ const App = () => {
           animationType="slide"
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}>
-          <ExpenseForm setModalVisible={() => setModalVisible(false)} />
+          <ExpenseForm
+            setModalVisible={() => setModalVisible(false)}
+            newExpenseHandler={newExpenseHandler}
+          />
         </Modal>
       )}
       {isValidBudget && (

@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,11 +7,27 @@ import {
   Pressable,
   SafeAreaView,
 } from 'react-native';
-import React from 'react';
 import {Picker} from '@react-native-picker/picker';
 import {globalStyles} from '../styles';
 
-export const ExpenseForm = ({setModalVisible}) => {
+const InputField = ({label, placeholder, value, onSetValue}) => {
+  return (
+    <View style={styles.field}>
+      <Text style={styles.label}>{label}</Text>
+      <TextInput
+        style={styles.input}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onSetValue}
+      />
+    </View>
+  );
+};
+
+export const ExpenseForm = ({setModalVisible, newExpenseHandler}) => {
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('');
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -22,20 +39,23 @@ export const ExpenseForm = ({setModalVisible}) => {
       </View>
       <View style={styles.form}>
         <Text style={styles.title}>New expense</Text>
-        <View style={styles.field}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Expense description. Example: food"
-          />
-        </View>
-        <View style={styles.field}>
-          <Text style={styles.label}>Amount</Text>
-          <TextInput placeholder="Expense amount. Example: 300" />
-        </View>
+        <InputField
+          label="Description"
+          placeholder="Expense description. Example: food"
+          value={name}
+          onSetValue={setName}
+        />
+        <InputField
+          label="Amount"
+          placeholder="Expense amount. Example: 300"
+          value={amount}
+          onSetValue={setAmount}
+        />
         <View style={styles.field}>
           <Text style={styles.label}>Category</Text>
-          <Picker>
+          <Picker
+            selectedValue={category}
+            onValueChange={value => setCategory(value)}>
             <Picker.Item label="--- Select ---" value="" />
             <Picker.Item label="Savings" value="savings" />
             <Picker.Item label="Food" value="food" />
@@ -46,7 +66,9 @@ export const ExpenseForm = ({setModalVisible}) => {
             <Picker.Item label="Subscriptions" value="subscriptions" />
           </Picker>
         </View>
-        <Pressable style={styles.submitBtn}>
+        <Pressable
+          style={styles.submitBtn}
+          onPress={() => newExpenseHandler({name, amount, category})}>
           <Text style={styles.submitBtnText}>Add expense</Text>
         </Pressable>
       </View>
