@@ -29,6 +29,7 @@ export const ExpenseForm = ({
   newExpenseHandler,
   initialExpense,
   setInitialExpense,
+  deleteExpenseHandler,
 }) => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
@@ -47,7 +48,7 @@ export const ExpenseForm = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View style={styles.btnGroup}>
         <Pressable
           style={styles.btnCancel}
           onLongPress={() => {
@@ -55,6 +56,11 @@ export const ExpenseForm = ({
             setModalVisible(false);
           }}>
           <Text style={styles.btnCancelText}>Cancel</Text>
+        </Pressable>
+        <Pressable
+          style={styles.btnCancel}
+          onLongPress={() => deleteExpenseHandler(id)}>
+          <Text style={styles.btnCancelText}>Delete</Text>
         </Pressable>
       </View>
       <View style={styles.form}>
@@ -107,12 +113,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1e40af',
   },
+  btnGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   btnCancel: {
     backgroundColor: '#DB2777',
     padding: 10,
     marginTop: 30,
     marginHorizontal: 10,
     borderRadius: 8,
+    width: '45%',
   },
   btnCancelText: {
     textAlign: 'center',

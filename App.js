@@ -66,6 +66,32 @@ const App = () => {
     setExpenseSelected(expense);
   };
 
+  const deleteExpenseHandler = id => {
+    console.log('deleting ', id);
+    Alert.alert(
+      'Are you sure you want to delete this expense?',
+      'This action cannot be reversed',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            setModalVisible(false);
+          },
+        },
+        {
+          text: 'Yes, delete it',
+          onPress: () => {
+            const newExpenses = expenditures.filter(
+              savedExpense => savedExpense.id !== id,
+            );
+            setExpenditures(newExpenses);
+            setModalVisible(false);
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -98,6 +124,7 @@ const App = () => {
             newExpenseHandler={newExpenseHandler}
             initialExpense={expenseSelected}
             setInitialExpense={setExpenseSelected}
+            deleteExpenseHandler={deleteExpenseHandler}
           />
         </Modal>
       )}
