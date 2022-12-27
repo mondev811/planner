@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {globalStyles} from '../styles';
-import {formatAmount} from '../helpers';
+import {formatAmount, formatDate} from '../helpers';
 
 const iconsDictionary = {
   savings: require('../img/icono_ahorro.png'),
@@ -24,9 +24,7 @@ export const Expense = ({expense}) => {
           <View style={styles.containerText}>
             <Text style={styles.category}>{category}</Text>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.date}>
-              Date: {new Date(expenseDate).toDateString()}
-            </Text>
+            <Text style={styles.date}>Date: {formatDate(expenseDate)}</Text>
           </View>
           <Text style={styles.amount}>{formatAmount(amount)}</Text>
         </View>
