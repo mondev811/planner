@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
+import CircularProgress from 'react-native-circular-progress-indicator';
 import {globalStyles} from '../styles';
 import {formatAmount} from '../helpers';
 
@@ -27,7 +28,18 @@ export const ControlBudget = ({budget, expenditures}) => {
   return (
     <View style={styles.container}>
       <View style={styles.centerImg}>
-        <Image style={styles.image} source={require('../img/grafico.jpg')} />
+        <CircularProgress
+          value={(used * 100) / budget}
+          inActiveStrokeColor={'#3B82F6'}
+          inActiveStrokeOpacity={0.2}
+          progressValueColor={'#3B82F6'}
+          activeStrokeColor={'#3B82F6'}
+          valueSuffix={'%'}
+          radius={125}
+          inActiveStrokeWidth={35}
+          activeStrokeWidth={35}
+          strokeLinecap={'butt'}
+        />
       </View>
       <View style={styles.containerText}>
         <AmountDisplay label="Budget: " amount={budget} />
@@ -44,10 +56,6 @@ const styles = StyleSheet.create({
   },
   centerImg: {
     alignItems: 'center',
-  },
-  image: {
-    width: 250,
-    height: 250,
   },
   containerText: {
     marginTop: 50,
