@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, Pressable, TextInput} from 'react-native';
 import React from 'react';
 import {globalStyles} from '../styles';
 
-export const NewBudget = ({budget, setBudget, handleNewBudget}) => {
+export const NewBudget = ({budget, setBudget, newBudgetHandler}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Define Budget</Text>
@@ -13,7 +13,7 @@ export const NewBudget = ({budget, setBudget, handleNewBudget}) => {
         value={budget.toString()}
         onChangeText={setBudget}
       />
-      <Pressable style={styles.button} onPress={() => handleNewBudget(budget)}>
+      <Pressable style={styles.button} onPress={() => newBudgetHandler(budget)}>
         <Text style={styles.buttonText}>Add budget</Text>
       </Pressable>
     </View>

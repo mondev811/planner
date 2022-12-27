@@ -8,7 +8,7 @@ const App = () => {
   const [expenditures, setExpenditures] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleNewBudget = budget => {
+  const newBudgetHandler = budget => {
     if (Number(budget) > 0) {
       setIsValidBudget(true);
     } else {
@@ -40,7 +40,7 @@ const App = () => {
           <NewBudget
             budget={budget}
             setBudget={setBudget}
-            handleNewBudget={handleNewBudget}
+            newBudgetHandler={newBudgetHandler}
           />
         ) : (
           <ControlBudget budget={budget} expenditures={expenditures} />
