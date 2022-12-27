@@ -1,6 +1,21 @@
 import React, {useState} from 'react';
-import {Alert, Image, Modal, Pressable, View, StyleSheet} from 'react-native';
-import {ControlBudget, ExpenseForm, Header, NewBudget} from './src/components';
+import {
+  Alert,
+  Image,
+  Modal,
+  Pressable,
+  View,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
+import {
+  ControlBudget,
+  ExpenseForm,
+  ExpenseList,
+  Header,
+  NewBudget,
+} from './src/components';
+import {generateId} from './src/helpers';
 
 const App = () => {
   const [isValidBudget, setIsValidBudget] = useState(false);
@@ -22,7 +37,8 @@ const App = () => {
       return;
     }
     const newExpense = {
-      id: Date.now(),
+      id: generateId(),
+      expenseDate: Date.now(),
       name: expense.name,
       amount: expense.amount,
       category: expense.category,
@@ -34,18 +50,21 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Header />
-        {!isValidBudget ? (
-          <NewBudget
-            budget={budget}
-            setBudget={setBudget}
-            newBudgetHandler={newBudgetHandler}
-          />
-        ) : (
-          <ControlBudget budget={budget} expenditures={expenditures} />
-        )}
-      </View>
+      <ScrollView>
+        <View style={styles.header}>
+          <Header />
+          {!isValidBudget ? (
+            <NewBudget
+              budget={budget}
+              setBudget={setBudget}
+              newBudgetHandler={newBudgetHandler}
+            />
+          ) : (
+            <ControlBudget budget={budget} expenditures={expenditures} />
+          )}
+        </View>
+        {isValidBudget && <ExpenseList expenses={expenditures} />}
+      </ScrollView>
       {modalVisible && (
         <Modal
           animationType="slide"
@@ -78,12 +97,13 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#3B82F6',
+    minHeight: 400,
   },
   image: {
     width: 60,
     height: 60,
     position: 'absolute',
-    top: 120,
-    right: 20,
+    bottom: 40,
+    right: 30,
   },
 });

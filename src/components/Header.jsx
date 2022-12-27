@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
     color: '#FFF',
     textTransform: 'uppercase',
     fontWeight: 'bold',
-    paddingVertical: 20,
+    paddingTop: 20,
   },
 });
