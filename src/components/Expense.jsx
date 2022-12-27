@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {globalStyles} from '../styles';
 import {formatAmount, formatDate} from '../helpers';
 
@@ -13,23 +13,31 @@ const iconsDictionary = {
   subscriptions: require('../img/icono_suscripciones.png'),
 };
 
-export const Expense = ({expense}) => {
+export const Expense = ({expense, expenseSelectedHandler}) => {
   const {name, category, amount, expenseDate, id} = expense;
-  console.log(expense);
+  const expenseReceived = {
+    name,
+    category,
+    amount,
+    expenseDate,
+    id,
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.containerImage}>
-          <Image style={styles.image} source={iconsDictionary[category]} />
-          <View style={styles.containerText}>
-            <Text style={styles.category}>{category}</Text>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.date}>Date: {formatDate(expenseDate)}</Text>
+    <Pressable onPress={() => expenseSelectedHandler(expenseReceived)}>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.containerImage}>
+            <Image style={styles.image} source={iconsDictionary[category]} />
+            <View style={styles.containerText}>
+              <Text style={styles.category}>{category}</Text>
+              <Text style={styles.name}>{name}</Text>
+              <Text style={styles.date}>Date: {formatDate(expenseDate)}</Text>
+            </View>
+            <Text style={styles.amount}>{formatAmount(amount)}</Text>
           </View>
-          <Text style={styles.amount}>{formatAmount(amount)}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -74,5 +82,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 15,
+    fontWeight: '700',
+    color: '#DB2777',
   },
 });

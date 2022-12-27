@@ -2,14 +2,20 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Expense} from './';
 
-export const ExpenseList = ({expenses}) => {
+export const ExpenseList = ({expenses, expenseSelectedHandler}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Expenses</Text>
       {expenses.length === 0 ? (
         <Text>There are no expenses.</Text>
       ) : (
-        expenses.map(expense => <Expense key={expense.id} expense={expense} />)
+        expenses.map(expense => (
+          <Expense
+            key={expense.id}
+            expense={expense}
+            expenseSelectedHandler={expenseSelectedHandler}
+          />
+        ))
       )}
     </View>
   );

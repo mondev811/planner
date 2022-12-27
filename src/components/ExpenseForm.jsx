@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -24,21 +24,43 @@ const InputField = ({label, placeholder, value, onSetValue}) => {
   );
 };
 
-export const ExpenseForm = ({setModalVisible, newExpenseHandler}) => {
+export const ExpenseForm = ({
+  setModalVisible,
+  newExpenseHandler,
+  initialExpense,
+  setInitialExpense,
+}) => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
+  const [id, setId] = useState();
+  const [expenseDate, setDate] = useState();
+
+  useEffect(() => {
+    if (!initialExpense) return;
+    setName(initialExpense.name);
+    setAmount(initialExpense.amount);
+    setCategory(initialExpense.category);
+    setId(initialExpense.id);
+    setDate(initialExpense.expenseDate);
+  }, [initialExpense]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Pressable
           style={styles.btnCancel}
-          onLongPress={() => setModalVisible(false)}>
+          onLongPress={() => {
+            setInitialExpense({});
+            setModalVisible(false);
+          }}>
           <Text style={styles.btnCancelText}>Cancel</Text>
         </Pressable>
       </View>
       <View style={styles.form}>
-        <Text style={styles.title}>New expense</Text>
+        <Text style={styles.title}>
+          {initialExpense?.id ? 'Modify expense' : 'New expense'}
+        </Text>
         <InputField
           label="Description"
           placeholder="Expense description. Example: food"
@@ -68,8 +90,12 @@ export const ExpenseForm = ({setModalVisible, newExpenseHandler}) => {
         </View>
         <Pressable
           style={styles.submitBtn}
-          onPress={() => newExpenseHandler({name, amount, category})}>
-          <Text style={styles.submitBtnText}>Add expense</Text>
+          onPress={() =>
+            newExpenseHandler({name, amount, category, id, expenseDate})
+          }>
+          <Text style={styles.submitBtnText}>
+            {initialExpense?.id ? 'Save changes' : 'Add expense'}
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>

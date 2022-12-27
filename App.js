@@ -22,6 +22,7 @@ const App = () => {
   const [budget, setBudget] = useState(0);
   const [expenditures, setExpenditures] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [expenseSelected, setExpenseSelected] = useState({});
 
   const newBudgetHandler = budget => {
     if (Number(budget) > 0) {
@@ -32,20 +33,37 @@ const App = () => {
   };
 
   const newExpenseHandler = expense => {
-    if (Object.values(expense).includes('')) {
+    if ([expense.name, expense.amount, expense.category].includes('')) {
       Alert.alert('Error', 'All fields are required.');
       return;
     }
-    const newExpense = {
-      id: generateId(),
-      expenseDate: Date.now(),
-      name: expense.name,
-      amount: expense.amount,
-      category: expense.category,
-    };
 
-    setExpenditures([...expenditures, newExpense]);
+    if (expense.id) {
+      const newExpenses = expenditures.map(savedExpense => {
+        if (savedExpense.id === expense.id) {
+          return expense;
+        } else {
+          return savedExpense;
+        }
+      });
+      setExpenditures(newExpenses);
+    } else {
+      const newExpense = {
+        id: generateId(),
+        expenseDate: Date.now(),
+        name: expense.name,
+        amount: expense.amount,
+        category: expense.category,
+      };
+      setExpenditures([...expenditures, newExpense]);
+    }
     setModalVisible(false);
+    setExpenseSelected({});
+  };
+
+  const expenseSelectedHandler = expense => {
+    setModalVisible(true);
+    setExpenseSelected(expense);
   };
 
   return (
@@ -63,7 +81,12 @@ const App = () => {
             <ControlBudget budget={budget} expenditures={expenditures} />
           )}
         </View>
-        {isValidBudget && <ExpenseList expenses={expenditures} />}
+        {isValidBudget && (
+          <ExpenseList
+            expenses={expenditures}
+            expenseSelectedHandler={expenseSelectedHandler}
+          />
+        )}
       </ScrollView>
       {modalVisible && (
         <Modal
@@ -73,6 +96,8 @@ const App = () => {
           <ExpenseForm
             setModalVisible={() => setModalVisible(false)}
             newExpenseHandler={newExpenseHandler}
+            initialExpense={expenseSelected}
+            setInitialExpense={setExpenseSelected}
           />
         </Modal>
       )}
