@@ -10,13 +10,13 @@ import React from 'react';
 import {Picker} from '@react-native-picker/picker';
 import {globalStyles} from '../styles';
 
-export const ExpenseForm = ({closeForm}) => {
+export const ExpenseForm = ({setModalVisible}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Pressable
           style={styles.btnCancel}
-          onLongPress={() => closeForm(false)}>
+          onLongPress={() => setModalVisible(false)}>
           <Text style={styles.btnCancelText}>Cancel</Text>
         </Pressable>
       </View>

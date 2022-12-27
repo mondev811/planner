@@ -10,7 +10,7 @@ const App = () => {
     // {id: 2, amount: 40},
     // {id: 3, amount: 50},
   ]);
-  const [modal, setModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleNewBudget = budget => {
     if (Number(budget) > 0) {
@@ -34,16 +34,16 @@ const App = () => {
           <ControlBudget budget={budget} expenditures={expenditures} />
         )}
       </View>
-      {modal && (
+      {modalVisible && (
         <Modal
           animationType="slide"
-          visible={modal}
-          onRequestClose={setModal(!modal)}>
-          <ExpenseForm closeForm={setModal} />
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}>
+          <ExpenseForm setModalVisible={() => setModalVisible(false)} />
         </Modal>
       )}
       {isValidBudget && (
-        <Pressable onPress={() => setModal(true)}>
+        <Pressable onPress={() => setModalVisible(true)}>
           <Image
             style={styles.image}
             source={require('./src/img/nuevo-gasto.png')}
