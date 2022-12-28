@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Image,
@@ -12,6 +12,7 @@ import {
   ControlBudget,
   ExpenseForm,
   ExpenseList,
+  Filter,
   Header,
   NewBudget,
 } from './src/components';
@@ -23,6 +24,8 @@ const App = () => {
   const [expenditures, setExpenditures] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [expenseSelected, setExpenseSelected] = useState({});
+  const [filterSelection, setFilterSelection] = useState('');
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
 
   const newBudgetHandler = budget => {
     if (Number(budget) > 0) {
@@ -92,6 +95,18 @@ const App = () => {
     );
   };
 
+  useEffect(() => {
+    if (filterSelection === '') {
+      setFilteredExpenses(expenditures);
+      return;
+    }
+
+    const filtered = expenditures.filter(
+      item => item.category === filterSelection,
+    );
+    setFilteredExpenses(filtered);
+  }, [filterSelection, expenditures]);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -108,10 +123,16 @@ const App = () => {
           )}
         </View>
         {isValidBudget && (
-          <ExpenseList
-            expenses={expenditures}
-            expenseSelectedHandler={expenseSelectedHandler}
-          />
+          <>
+            <Filter
+              initialValue={filterSelection}
+              setInitialValue={setFilterSelection}
+            />
+            <ExpenseList
+              expenses={filteredExpenses}
+              expenseSelectedHandler={expenseSelectedHandler}
+            />
+          </>
         )}
       </ScrollView>
       {modalVisible && (
