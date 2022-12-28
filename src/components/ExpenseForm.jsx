@@ -7,8 +7,8 @@ import {
   Pressable,
   SafeAreaView,
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
 import {globalStyles} from '../styles';
+import {CategoriesPicker} from './';
 
 const InputField = ({label, placeholder, value, onSetValue}) => {
   return (
@@ -81,18 +81,10 @@ export const ExpenseForm = ({
         />
         <View style={styles.field}>
           <Text style={styles.label}>Category</Text>
-          <Picker
-            selectedValue={category}
-            onValueChange={value => setCategory(value)}>
-            <Picker.Item label="--- Select ---" value="" />
-            <Picker.Item label="Savings" value="savings" />
-            <Picker.Item label="Food" value="food" />
-            <Picker.Item label="Household" value="household" />
-            <Picker.Item label="Miscelaneous" value="misc" />
-            <Picker.Item label="Entertainment" value="entertainment" />
-            <Picker.Item label="Health" value="health" />
-            <Picker.Item label="Subscriptions" value="subscriptions" />
-          </Picker>
+          <CategoriesPicker
+            initialValue={category}
+            setInitialValue={setCategory}
+          />
         </View>
         <Pressable
           style={styles.submitBtn}
