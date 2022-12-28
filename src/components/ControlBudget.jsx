@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {globalStyles} from '../styles';
 import {formatAmount} from '../helpers';
@@ -12,7 +12,7 @@ const AmountDisplay = ({label, amount}) => {
     </Text>
   );
 };
-export const ControlBudget = ({budget, expenditures}) => {
+export const ControlBudget = ({budget, expenditures, resetAppHandler}) => {
   const [available, setAvailable] = useState(0);
   const [used, setUsed] = useState(0);
 
@@ -41,6 +41,9 @@ export const ControlBudget = ({budget, expenditures}) => {
           strokeLinecap={'butt'}
         />
       </View>
+      <Pressable style={styles.btn} onPress={() => resetAppHandler()}>
+        <Text style={styles.btnText}>Initialize App</Text>
+      </Pressable>
       <View style={styles.containerText}>
         <AmountDisplay label="Budget: " amount={budget} />
         <AmountDisplay label="Available: " amount={available} />
@@ -56,6 +59,18 @@ const styles = StyleSheet.create({
   },
   centerImg: {
     alignItems: 'center',
+  },
+  btn: {
+    backgroundColor: '#DB2777',
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 5,
+  },
+  btnText: {
+    textAlign: 'center',
+    color: '#FFF',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   containerText: {
     marginTop: 50,
