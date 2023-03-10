@@ -1,9 +1,15 @@
 import React from 'react';
 import {Picker} from '@react-native-picker/picker';
 
-export const CategoriesPicker = ({initialValue, setInitialValue}) => {
+export const CategoriesPicker = ({initialValue, setInitialValue, isClosed}) => {
+  const pickerRef = React.useRef();
+  if (isClosed) {
+    pickerRef.current.blur();
+    return <></>;
+  }
   return (
     <Picker
+      ref={pickerRef}
       selectedValue={initialValue}
       onValueChange={value => setInitialValue(value)}>
       <Picker.Item label="--- Select ---" value="" />
