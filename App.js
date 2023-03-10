@@ -111,14 +111,16 @@ const App = () => {
   };
 
   const newExpenseHandler = expense => {
-    if ([expense.name, expense.amount, expense.category].includes('')) {
+    const {id, name, amount, category} = expense;
+
+    if (!name || !amount || !category) {
       Alert.alert('Error', 'All fields are required.');
       return;
     }
 
-    if (expense.id) {
+    if (id) {
       const newExpenses = expenditures.map(savedExpense => {
-        if (savedExpense.id === expense.id) {
+        if (savedExpense.id === id) {
           return expense;
         } else {
           return savedExpense;
