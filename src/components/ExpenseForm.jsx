@@ -8,9 +8,15 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {globalStyles} from '../styles';
-import {CategoriesPicker} from './';
+import {CategoriesPicker, closeCategoriesPicker} from './';
 
-const InputField = ({label, placeholder, value, onSetValue}) => {
+const InputField = ({
+  label,
+  placeholder,
+  value,
+  onSetValue,
+  keyboardType = 'default',
+}) => {
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
@@ -19,6 +25,7 @@ const InputField = ({label, placeholder, value, onSetValue}) => {
         placeholder={placeholder}
         value={value}
         onChangeText={onSetValue}
+        keyboardType={keyboardType}
       />
     </View>
   );
@@ -78,6 +85,7 @@ export const ExpenseForm = ({
           placeholder="Expense amount. Example: 300"
           value={amount}
           onSetValue={setAmount}
+          keyboardType="numeric"
         />
         <View style={styles.field}>
           <Text style={styles.label}>Category</Text>
