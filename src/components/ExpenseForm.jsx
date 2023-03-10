@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {globalStyles} from '../styles';
-import {CategoriesPicker, closeCategoriesPicker} from './';
+import {CategoriesPicker} from './';
 
 const InputField = ({
   label,
@@ -43,31 +43,42 @@ export const ExpenseForm = ({
   const [category, setCategory] = useState('');
   const [id, setId] = useState();
   const [expenseDate, setDate] = useState();
+  const [deleteDisabled, setDeleteDisabled] = useState(true);
 
   useEffect(() => {
-    if (!initialExpense) return;
+    if (!initialExpense.id) {
+      setDeleteDisabled(true);
+      return;
+    }
     setName(initialExpense.name);
     setAmount(initialExpense.amount);
     setCategory(initialExpense.category);
     setId(initialExpense.id);
     setDate(initialExpense.expenseDate);
+    setDeleteDisabled(false);
   }, [initialExpense]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.btnGroup}>
         <Pressable
-          style={styles.btnCancel}
+          style={styles.btnTop}
           onLongPress={() => {
             setInitialExpense({});
             setModalVisible(false);
           }}>
-          <Text style={styles.btnCancelText}>Cancel</Text>
+          <Text style={styles.btnTopText}>Cancel</Text>
         </Pressable>
         <Pressable
-          style={styles.btnCancel}
-          onLongPress={() => deleteExpenseHandler(id)}>
-          <Text style={styles.btnCancelText}>Delete</Text>
+          style={deleteDisabled ? styles.btnTopDisabled : styles.btnTop}
+          onLongPress={() => deleteExpenseHandler(id)}
+          disabled={deleteDisabled}>
+          <Text
+            style={
+              deleteDisabled ? styles.btnTopTextDisabled : styles.btnTopText
+            }>
+            Delete
+          </Text>
         </Pressable>
       </View>
       <View style={styles.form}>
@@ -98,7 +109,8 @@ export const ExpenseForm = ({
           style={styles.submitBtn}
           onPress={() =>
             newExpenseHandler({name, amount, category, id, expenseDate})
-          }>
+          }
+          disabled={deleteDisabled.current}>
           <Text style={styles.submitBtnText}>
             {initialExpense?.id ? 'Save changes' : 'Add expense'}
           </Text>
@@ -106,6 +118,20 @@ export const ExpenseForm = ({
       </View>
     </SafeAreaView>
   );
+};
+
+const btnTopBase = {
+  padding: 10,
+  marginTop: 30,
+  marginHorizontal: 10,
+  borderRadius: 8,
+  width: '45%',
+};
+
+const btnTopTextBase = {
+  textAlign: 'center',
+  textTransform: 'uppercase',
+  fontWeight: 'bold',
 };
 
 const styles = StyleSheet.create({
@@ -117,19 +143,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  btnCancel: {
+  btnTop: {
     backgroundColor: '#DB2777',
-    padding: 10,
-    marginTop: 30,
-    marginHorizontal: 10,
-    borderRadius: 8,
-    width: '45%',
+    ...btnTopBase,
   },
-  btnCancelText: {
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    fontWeight: 'bold',
+  btnTopText: {
     color: '#FFF',
+    ...btnTopTextBase,
+  },
+  btnTopDisabled: {
+    backgroundColor: '#de8cb1',
+    ...btnTopBase,
+  },
+  btnTopTextDisabled: {
+    color: '#9c9c9c',
+    ...btnTopTextBase,
   },
   form: {
     ...globalStyles.container,
