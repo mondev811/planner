@@ -1,7 +1,13 @@
 import React from 'react';
 import {Picker} from '@react-native-picker/picker';
 
-export const CategoriesPicker = ({initialValue, setInitialValue, isClosed}) => {
+export const CategoriesPicker = ({
+  initialValue,
+  setInitialValue,
+  isClosed,
+  defaultLabel = '--- Select ---',
+  defaultValue = '',
+}) => {
   const pickerRef = React.useRef();
   if (isClosed) {
     pickerRef.current.blur();
@@ -12,7 +18,7 @@ export const CategoriesPicker = ({initialValue, setInitialValue, isClosed}) => {
       ref={pickerRef}
       selectedValue={initialValue}
       onValueChange={value => setInitialValue(value)}>
-      <Picker.Item label="--- Select ---" value="" />
+      <Picker.Item label={defaultLabel} value={defaultValue} />
       <Picker.Item label="Savings" value="savings" />
       <Picker.Item label="Food" value="food" />
       <Picker.Item label="Household" value="household" />

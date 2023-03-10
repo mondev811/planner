@@ -10,6 +10,7 @@ export const Filter = ({initialValue, setInitialValue}) => {
       <CategoriesPicker
         initialValue={initialValue}
         setInitialValue={setInitialValue}
+        defaultLabel={'---Select filter---'}
       />
     </View>
   );
