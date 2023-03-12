@@ -5,7 +5,7 @@ export const CategoriesPicker = ({
   initialValue,
   setInitialValue,
   isClosed,
-  defaultLabel = '--- Select ---',
+  defaultLabel = '--- Select category---',
   defaultValue = '',
 }) => {
   const pickerRef = React.useRef();
